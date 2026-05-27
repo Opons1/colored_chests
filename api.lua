@@ -269,6 +269,22 @@ function colored_chests.chest.register_chest(prefixed_name, d)
 	core.register_node(prefixed_name, def_closed)
 	core.register_node(prefixed_name .. "_open", def_opened)
 
+	if core.get_modpath("wrench") then
+		local wrenchdata = {
+			lists = {"main"},
+			metas = {
+				infotext = wrench.META_TYPE_STRING,
+				formspec = wrench.META_TYPE_STRING,
+			},
+		}
+		if def.protected then 
+			wrenchdata.metas.owner = wrench.META_TYPE_STRING
+			wrenchdata.metas.key_lock_secret = wrench.META_TYPE_STRING
+			wrenchdata.owned = true
+		end
+		wrench.register_node(prefixed_name, wrenchdata)
+	end
+
 	-- convert old chests to this new variant
 	if name == "colored_chests:chest" or name == "colored_chests:chest_locked" then
 		core.register_lbm({
